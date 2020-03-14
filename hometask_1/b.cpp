@@ -1,7 +1,5 @@
-#include <iostream>
 #include <vector>
-#include <stack>
-#include <algorithm>
+#include <iostream>
 
 class Graph
 {
@@ -31,133 +29,97 @@ public:
 	~Graph() {}
 };
 
-bool __searchLoopsFrom(const Graph &graph, const int &node, bool *visited = nullptr)
+bool searchLoopsFrom(const Graph &g, const int &node, bool* const &in_stack, bool* const &visited)
 {
-	bool ret_value = false;
+	visited[node] = true;
+	in_stack[node] = true;
 
-	bool need_to_free = false;
-	if(visited == nullptr)
+	bool result = false;
+
+	auto next_nodes = g.getNeighbours(node);
+	for(const int &next : next_nodes)
 	{
-		visited = new bool[graph.size()];
-		for(int i=0; i<graph.size(); ++i)
-			visited[i] = false;
-		need_to_free = true;
+		if(in_stack[next])
+			result = true;
+		else if (!visited[next])
+			result = searchLoopsFrom(g, next, in_stack, visited);
+	
+		if(result)
+			break;
 	}
 
-	visited[node] = true;
+	in_stack[node] = false;
 
-	auto next_nodes = graph.getNeighbours(node);
-	for(int i=0; i<next_nodes.size() && !ret_value; ++i)
-		if(visited[next_nodes[i]])
-		{
-			ret_value = true;
-			break;
-		}
-		else
-			ret_value = __searchLoopsFrom(graph, next_nodes[i], visited);
-
-	visited[node] = false;
-
-	if(need_to_free)
-		delete [] visited;
-
-	return ret_value;;
+	return result;
 }
 
 bool isLoops(const Graph &g)
 {
-	for(int i=0; i<g.size(); ++i)
-		if (__searchLoopsFrom(g, i))
-			return true;
-	return false;
+	bool *visited = new bool[g.size()]();
+	bool *in_stack = new bool[g.size()]();
+
+	bool result = false;
+	for(int i=0; !result && i<g.size(); ++i)
+		if(!visited[i])
+			result = searchLoopsFrom(g, i, in_stack, visited);
+
+	delete [] visited;
+	delete [] in_stack;
+	return result;
 }
 
-void concat(std::vector<int> &v0, const std::vector<int> &v1)
-{
-	for(auto x : v1)
-		v0.push_back(x);
-}
-
-std::vector<int> __subtreeTopSort(const Graph &g, const int node, bool *visited)
+void DFS(const Graph &g, const int &node, bool* const &visited, std::vector<int> &result)
 {
 	visited[node] = true;
-	std::vector<int> result;
 	auto next_nodes = g.getNeighbours(node);
-	std::sort(next_nodes.begin(), next_nodes.end());
-	for(int a : next_nodes)
-		if(!visited[a])
-			concat(result, __subtreeTopSort(g, a, visited));
-	
+	for(const int &next : next_nodes)
+		if(!visited[next])
+			DFS(g, next, visited, result);
 	result.push_back(node);
-
-	return result;
 }
 
 std::vector<int> topSort(const Graph &g)
 {
-	bool *nodes = new bool[g.size()];
-	for(int i=0; i<g.size(); ++i)
-		nodes[i] = false;
+	std::vector<int> dfs_return;
+	bool *visited = new bool[g.size()]();
 
 	for(int i=0; i<g.size(); ++i)
-	{
-		auto edges = g.getNeighbours(i);
-		for(int x : edges)
-			nodes[x] = true;
-	}
-
-	bool *visited = new bool[g.size()];
-	for(int i=0; i<g.size(); ++i)
-		visited[i] = false;
-
-	std::vector<int> result;
-	for(int i=0; i<g.size(); ++i)
-		if(!nodes[i])
-		{
-			visited[i] = true;
-			result.push_back(i);
-		}
-
-	delete [] nodes;
-
-	int start_nodes_count = result.size();
-	for(int i=0; i < start_nodes_count; ++i)
-	{
-		auto subtree = __subtreeTopSort(g, result[i], visited);
-		std::reverse(subtree.begin(), subtree.end());
-		subtree.erase(subtree.begin());
-
-		concat(result, subtree);
-	}
-
+		if(!visited[i])
+			DFS(g, i, visited, dfs_return);
+	
 	delete [] visited;
 
-	return result;
+	return dfs_return;
+}
+
+template<typename T>
+std::ostream &operator<<(std::ostream &out, std::vector<T> vec)
+{
+	for(auto it = vec.rbegin(); it != vec.rend(); ++it)
+		out<<*it<<" ";
+	return out;
 }
 
 int main()
 {
 	int nodes_count, edges_count;
-	std::cin>>nodes_count>>edges_count;
+	std::cin >> nodes_count >> edges_count;
 
 	Graph graph(nodes_count);
 
 	for(int i=0; i<edges_count; ++i)
 	{
 		int from, to;
-		std::cin>>from>>to;
+		std::cin >> from >> to;
 		graph.addEdge(from, to);
 	}
 
 	if(isLoops(graph))
-		std::cout<<"NO\n";
+		std::cout << "NO\n";
 	else
 	{
-		std::cout<<"YES\n";
-		auto a=topSort(graph);
-		for(auto it = a.begin(); it != a.end(); ++it)
-			std::cout<<*it<<" ";
-		std::cout<<"\n";
+		auto sorted = topSort(graph);
+		std::cout << "YES\n" << sorted<<"\n";
 	}
 
 	return 0;
