@@ -396,6 +396,8 @@ public:
 	explicit operator bool() const { return sign != 0; }
 
 	friend std::istream &operator>>(std::istream&, BigInteger&);
+
+	friend Rational;
 };
 
 std::ostream &operator<<(std::ostream &out, const BigInteger &bi)
@@ -512,7 +514,182 @@ const BigInteger operator%(const BigInteger &bi0, const BigInteger &bi1)
 	return bi0 - (bi0 / bi1)*bi1;
 }
 
-
 /* ######################################################################################### */
 
-class Rational;
+class Rational
+{
+private:
+	BigInteger p;
+	BigInteger q;
+
+	BigInteger gcd(const BigInteger &bi0, const BigInteger &bi1) const
+	{
+		for(BigInteger tmp; bi1 != 0;)
+		{
+			tmp = bi0 % bi1;
+			a = bi1;
+			bi1 = tmp;
+		}
+		
+		return bi0.abs();
+	}
+
+	void transform()
+	{
+		BigInteger tmp = gcd(p, q);
+
+		p /= tmp;
+		q /= tmp;
+
+		p.sign *= q.sign;
+		q.sign = 1;
+	}
+
+public:
+	Rational() = default;
+
+	Rational(const Rational&) = default;
+
+	Rational &operator=(const Rational&) = default;
+
+	~Rational() = default;
+
+	Rational(const int &num):
+		p(num),
+		q(1)
+	{}
+
+	Rational(const BigInteger &num):
+		p(num),
+		q(1)
+	{}
+
+	Rational &operator-() const
+	{
+		Rational result = *this;
+		result.p.sing *= -1;
+
+		return result;
+	}
+
+	Rational &operator+=(const Rational &r)
+	{
+		p = p*r.q + r.p*q;
+		q *= r.q;
+
+		transform();
+
+		return *this;
+	}
+
+	Rational &operator-=(const Rational &r)
+	{
+		*this += -r;
+
+		return *this;
+	}
+
+	Rational &operator*=(const Rational &r)
+	{
+		p *= r.p;
+		q *= r.q;
+
+		transform();
+
+		return *this;
+	}
+
+	Rational &operator/=(const Rational &r)
+	{
+		p *= r.q;
+		q *= r.p;
+
+		transform();
+
+		return *this;
+	}
+
+	std::string toString() const
+	{
+		if(q != 1)
+			return p.toString() + "/" + q.toString();
+		else
+			return p.toString();
+	}
+
+	std::string asDecimal(size_t precision=0) const
+	{
+		return "";
+	}
+
+	operator double() const
+	{
+		return 0.0;
+	}
+
+	friend bool operator<(const Rational&, const Rational&);
+};
+
+const Rational operator+(const Rational &r0, const Rational &r1)
+{
+	Rational tmp = r0;
+	tmp += r1;
+	return tmp;
+}
+
+const Rational operator-(const Rational &r0, const Rational &r1)
+{
+	Rational tmp = r0;
+	tmp -= r1;
+	return tmp;
+}
+
+const Rational operator*(const Rational &r0, const Rational &r1)
+{
+	Rational tmp = r0;
+	tmp *= r1;
+	return tmp;
+}
+
+const Rational operator/(const Rational &r0, const Rational &r1)
+{
+	Rational tmp = r0;
+	tmp /= r1;
+	return tmp;
+}
+
+////////////////////////////
+
+bool Rational operator<(const Rational &r0, const Rational &r1)
+{
+	// a/b < c/d
+	// a*d < c*b
+	
+	return r0.p*r1.q < r1.p*r0.q;
+}
+
+bool Rational operator>(const Rational &r0, const Rational &r1) 	{ return r1 < r0 }
+bool Rational operator==(const Rational &r0, const Rational &r1) 	{ return !(r0 < r1) && !(r0 > r1); }
+bool Rational operator!=(const Rational &r0, const Rational &r1) 	{ return (r0 < r1) || (r0 > r1); }
+bool Rational operator<=(const Rational &r0, const Rational &r1) 	{ return !(r0 > r1); }
+bool Rational operator>=(const Rational &r0, const Rational &r1) 	{ return !(r0 < r1); }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
