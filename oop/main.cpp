@@ -185,7 +185,6 @@ TEST(BigInteger_Arithmetic_elementary, _random_math)
 
 TEST(BigInteger_Arithmetic_elementary, _inc_dec)
 {
-	int i;
 	for(BigInteger bi=-100, i=-100; bi<=100; ++bi, ++i)
 		ASSERT_EQ(BigInteger(i), bi);
 

@@ -61,7 +61,7 @@ private:
 		data.resize((data.size() > bi.data.size())?data.size():bi.data.size());
 
 		uint8_t r = 0;
-		for(int i=0; i<data.size() && !(i>=bi.data.size() && r==0); ++i)
+		for(size_t i=0; i<data.size() && !(i>=bi.data.size() && r==0); ++i)
 		{
 			if(i < bi.data.size())
 				data[i] += bi.data[i];
@@ -93,7 +93,7 @@ private:
 		}
 
 		uint8_t r=0;
-		for(int i=0; i<data.size() && !(i>=bi.data.size() && r==0); ++i)
+		for(size_t i=0; i<data.size() && !(i>=bi.data.size() && r==0); ++i)
 		{
 			data[i] += 10 - r;
 
@@ -129,7 +129,7 @@ private:
 
 			n = (n>0)?n:-n;
 			int r = 0;
-			for(int i = 0; i<data.size(); ++i)
+			for(size_t i = 0; i<data.size(); ++i)
 			{
 				int new_digit = data[i]*n + r;
 				r = new_digit / 10;
@@ -281,7 +281,7 @@ public:
 
 		std::string str;
 
-		for(int i=0; i<data.size(); ++i)
+		for(size_t i=0; i<data.size(); ++i)
 			str += ('0' + data[i]);
 
 		if(sign < 0)
@@ -511,3 +511,8 @@ const BigInteger operator%(const BigInteger &bi0, const BigInteger &bi1)
 {
 	return bi0 - (bi0 / bi1)*bi1;
 }
+
+
+/* ######################################################################################### */
+
+class Rational;
