@@ -244,6 +244,9 @@ TEST(Rational_, _mockname)
 
 int main(int argc, char **argv)
 {
+	BigInteger bi0, bi1;
+	std::cin>>bi0>>bi1;
+	std::cout<<bi0<<"\n"<<bi1<<"\n";
 
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();

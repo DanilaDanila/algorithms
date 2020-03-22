@@ -18,18 +18,21 @@ private:
 
 	std::vector<uint8_t> data;
 
-	explicit BigInteger(const std::string &str)
-	{   
-		auto it = str.rbegin();
-		
-		if (*it == '-')
+	explicit BigInteger(const std::string &_str)
+	{	
+		std::string str = _str;
+
+		sign = 1;
+		if (str[0] == '-')
 		{
 			sign = -1;
-			++it;
+			str.erase(str.begin());
 		}
-		else
-			sign = 1;
-
+		else if(str[0] == '+')
+			str.erase(str.begin());
+   
+		auto it = str.rbegin();
+	
 		for(; it != str.rend(); ++it)
 		{
 			char digit = *it;
@@ -43,6 +46,13 @@ private:
 			digit -= '0';
 			data.push_back(digit);
 		}
+
+		int new_size = data.size();
+		while(new_size > 0 && data[new_size-1] == 0)
+			--new_size;
+		data.resize(new_size);
+		if(new_size == 0)
+			sign = 0;
 	}
 
 	/*
