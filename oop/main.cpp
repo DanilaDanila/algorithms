@@ -1,5 +1,5 @@
 #include <iostream>
-#include "biginteger.cpp"
+#include "biginteger.h"
 
 #include <gtest/gtest.h>
 
