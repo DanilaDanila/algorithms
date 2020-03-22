@@ -624,7 +624,7 @@ public:
 		return "";
 	}
 
-	operator double() const
+	explicit operator double() const
 	{
 		return 0.0;
 	}
