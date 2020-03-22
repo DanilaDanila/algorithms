@@ -5,6 +5,7 @@
 #include <string>
 
 class BigInteger;
+class Rational;
 
 const BigInteger operator*(const BigInteger&, const BigInteger&);
 const BigInteger operator/(const BigInteger&, const BigInteger&);
@@ -522,12 +523,12 @@ private:
 	BigInteger p;
 	BigInteger q;
 
-	BigInteger gcd(const BigInteger &bi0, const BigInteger &bi1) const
+	BigInteger gcd(BigInteger bi0, BigInteger bi1) const
 	{
 		for(BigInteger tmp; bi1 != 0;)
 		{
 			tmp = bi0 % bi1;
-			a = bi1;
+			bi0 = bi1;
 			bi1 = tmp;
 		}
 		
@@ -564,10 +565,10 @@ public:
 		q(1)
 	{}
 
-	Rational &operator-() const
+	Rational operator-() const
 	{
 		Rational result = *this;
-		result.p.sing *= -1;
+		result.p.sign *= -1;
 
 		return result;
 	}
@@ -619,6 +620,7 @@ public:
 
 	std::string asDecimal(size_t precision=0) const
 	{
+		precision++;
 		return "";
 	}
 
@@ -660,7 +662,7 @@ const Rational operator/(const Rational &r0, const Rational &r1)
 
 ////////////////////////////
 
-bool Rational operator<(const Rational &r0, const Rational &r1)
+bool operator<(const Rational &r0, const Rational &r1)
 {
 	// a/b < c/d
 	// a*d < c*b
@@ -668,11 +670,11 @@ bool Rational operator<(const Rational &r0, const Rational &r1)
 	return r0.p*r1.q < r1.p*r0.q;
 }
 
-bool Rational operator>(const Rational &r0, const Rational &r1) 	{ return r1 < r0 }
-bool Rational operator==(const Rational &r0, const Rational &r1) 	{ return !(r0 < r1) && !(r0 > r1); }
-bool Rational operator!=(const Rational &r0, const Rational &r1) 	{ return (r0 < r1) || (r0 > r1); }
-bool Rational operator<=(const Rational &r0, const Rational &r1) 	{ return !(r0 > r1); }
-bool Rational operator>=(const Rational &r0, const Rational &r1) 	{ return !(r0 < r1); }
+bool operator>(const Rational &r0, const Rational &r1)	{ return r1 < r0; }
+bool operator==(const Rational &r0, const Rational &r1) { return !(r0 < r1) && !(r0 > r1); }
+bool operator!=(const Rational &r0, const Rational &r1) { return (r0 < r1) || (r0 > r1); }
+bool operator<=(const Rational &r0, const Rational &r1) { return !(r0 > r1); }
+bool operator>=(const Rational &r0, const Rational &r1) { return !(r0 < r1); }
 
 
 
