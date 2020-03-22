@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <vector>
+#include <iostream>
 
 class Graph
 {
@@ -71,7 +73,11 @@ public:
     ~Graph() {} 
 };
 
+<<<<<<< HEAD
 void DFS(const Graph &g, const int &node, std::vector<int> &t_out, bool *visited)
+=======
+void DFS(const Graph &g, const int &node, std::vector<int> &t_out, bool* const visited)
+>>>>>>> aebb3f867c664cccde28abceaad5460d7630c495
 {
 	visited[node] = true;
 	for(auto x : g.getNeighbours(node))
@@ -123,13 +129,13 @@ std::vector<int> getCouplingComponents(const Graph &g)
 int main()
 {
 	int nodes_count, edges_count;
-	std::cin>>nodes_count>>edges_count;
+	std::cin >> nodes_count >> edges_count;
 	Graph graph(nodes_count);
 
 	for(int i=0; i<edges_count; ++i)
 	{
 		int from, to;
-		std::cin>>from>>to;
+		std::cin >> from >> to;
 		--from, --to;
 		graph.addEdge(from, to);
 	}
@@ -145,10 +151,17 @@ int main()
 						town.addEdge(couplings[i], couplings[c]);
 
 	if(town.size() > 1)
+<<<<<<< HEAD
 		std::cout<<std::max(town.countNodesWithoutOutput(),
 							town.countNodesWithoutInput())<<"\n";
 	else
 		std::cout<<"0\n";
+=======
+		std::cout << std::max(town.countNodesWithoutOutput(),
+							  town.countNodesWithoutInput()) <<"\n";
+	else
+		std::cout << "0\n";
+>>>>>>> aebb3f867c664cccde28abceaad5460d7630c495
 
 	return 0;
 }

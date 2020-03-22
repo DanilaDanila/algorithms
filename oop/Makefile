@@ -1,11 +1,8 @@
 COMPILER=g++
 LIBS=-lgtest -pthread
 
-all: main.o
-	$(COMPILER) $(LIBS) main.o -o test
-
-main.o: main.cpp biginteger.cpp
-	$(COMPILER) -c main.cpp
+all: main.cpp
+	$(COMPILER) $(LIBS) -ggdb main.cpp -o test
 
 clean:
-	rm *.o biginteger
+	rm test

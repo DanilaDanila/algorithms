@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 #include <bits/stdc++.h>
+=======
+#include <vector>
+#include <iostream>
+>>>>>>> aebb3f867c664cccde28abceaad5460d7630c495
 
 class Graph
 {
@@ -36,7 +41,11 @@ bool searchLoopsFrom(const Graph &g, const int &node, bool* const &in_stack, boo
 	bool result = false;
 
 	auto next_nodes = g.getNeighbours(node);
+<<<<<<< HEAD
 	for(int next : next_nodes)
+=======
+	for(const int &next : next_nodes)
+>>>>>>> aebb3f867c664cccde28abceaad5460d7630c495
 	{
 		if(in_stack[next])
 			result = true;
@@ -71,7 +80,11 @@ void DFS(const Graph &g, const int &node, bool* const &visited, std::vector<int>
 {
 	visited[node] = true;
 	auto next_nodes = g.getNeighbours(node);
+<<<<<<< HEAD
 	for(int next : next_nodes)
+=======
+	for(const int &next : next_nodes)
+>>>>>>> aebb3f867c664cccde28abceaad5460d7630c495
 		if(!visited[next])
 			DFS(g, next, visited, result);
 	result.push_back(node);
@@ -102,23 +115,27 @@ std::ostream &operator<<(std::ostream &out, std::vector<T> vec)
 int main()
 {
 	int nodes_count, edges_count;
-	std::cin>>nodes_count>>edges_count;
+	std::cin >> nodes_count >> edges_count;
 
 	Graph graph(nodes_count);
 
 	for(int i=0; i<edges_count; ++i)
 	{
 		int from, to;
-		std::cin>>from>>to;
+		std::cin >> from >> to;
 		graph.addEdge(from, to);
 	}
 
 	if(isLoops(graph))
-		std::cout<<"NO\n";
+		std::cout << "NO\n";
 	else
 	{
 		auto sorted = topSort(graph);
+<<<<<<< HEAD
 		std::cout<<"YES\n"<<sorted<<"\n";
+=======
+		std::cout << "YES\n" << sorted<<"\n";
+>>>>>>> aebb3f867c664cccde28abceaad5460d7630c495
 	}
 
 	return 0;

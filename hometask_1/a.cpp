@@ -103,7 +103,7 @@ int main()
 			min_sum = new_sum;
 	}
 
-	std::cout<<min_sum<<"\n";
+	std::cout << min_sum << "\n";
 	
 	return 0;
 }
