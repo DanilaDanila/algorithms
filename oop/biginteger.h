@@ -420,7 +420,7 @@ std::ostream &operator<<(std::ostream &out, const BigInteger &bi)
 std::istream &operator>>(std::istream &in, BigInteger &bi)
 {
 	std::string str;
-	std::cin>>str;
+	in>>str;
 
 	bi=BigInteger(str);
 
