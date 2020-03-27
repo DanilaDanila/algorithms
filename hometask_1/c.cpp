@@ -73,11 +73,7 @@ public:
     ~Graph() {} 
 };
 
-<<<<<<< HEAD
-void DFS(const Graph &g, const int &node, std::vector<int> &t_out, bool *visited)
-=======
 void DFS(const Graph &g, const int &node, std::vector<int> &t_out, bool* const visited)
->>>>>>> aebb3f867c664cccde28abceaad5460d7630c495
 {
 	visited[node] = true;
 	for(auto x : g.getNeighbours(node))
@@ -151,17 +147,10 @@ int main()
 						town.addEdge(couplings[i], couplings[c]);
 
 	if(town.size() > 1)
-<<<<<<< HEAD
-		std::cout<<std::max(town.countNodesWithoutOutput(),
-							town.countNodesWithoutInput())<<"\n";
-	else
-		std::cout<<"0\n";
-=======
 		std::cout << std::max(town.countNodesWithoutOutput(),
 							  town.countNodesWithoutInput()) <<"\n";
 	else
 		std::cout << "0\n";
->>>>>>> aebb3f867c664cccde28abceaad5460d7630c495
 
 	return 0;
 }
